@@ -1,6 +1,9 @@
 package ok.plugins
 
-import com.fasterxml.jackson.databind.*
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.util.StdDateFormat
 import io.ktor.serialization.gson.*
 import io.ktor.serialization.jackson.*
 import io.ktor.serialization.kotlinx.json.*
@@ -16,6 +19,11 @@ fun Application.configureSerialization() {
         }
         jackson {
             enable(SerializationFeature.INDENT_OUTPUT)
+            configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+            configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            dateFormat = StdDateFormat().withColonInTimeZone(true)
+            propertyNamingStrategy = PropertyNamingStrategy.SNAKE_CASE
+            configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
         }
     }
     routing {
